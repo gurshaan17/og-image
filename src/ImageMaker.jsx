@@ -71,7 +71,7 @@ const ImageMaker = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md sm:max-w-lg mb-8"> {/* Increased max width */}
+      <div className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md sm:max-w-2xl mb-8"> {/* Increased max width */}
         <h1 className="text-3xl font-bold mb-4 text-center">Image Maker</h1>
         <p className="text-gray-400 text-center mb-6">Create beautiful Open Graph images for your website.</p>
         <form onSubmit={handleSubmit} className="space-y-4">

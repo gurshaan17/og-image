@@ -39,35 +39,48 @@ const ImageMaker = () => {
       console.error('Error generating image:', error);
     }
   };
+
   const handleUploadToFirebase = async () => {
-    if (!ogImageUrl) {
-      alert('Please generate an image first.');
-      return;
+  if (!ogImageUrl) {
+    alert('Please generate an image first.');
+    return;
+  }
+
+  try {
+    const fullImageUrl = `https://og-image-backend-f1ma.onrender.com${ogImageUrl}`;
+    console.log('Fetching image from:', fullImageUrl);
+
+    const response = await fetch(fullImageUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch the image: ${response.statusText}`);
     }
-  
-    try {
-      // Fetch the generated image blob
-      const response = await fetch(ogImageUrl); // Ensure ogImageUrl is a complete URL
-      if (!response.ok) {
-        throw new Error('Failed to fetch the image');
-      }
-      const blob = await response.blob();
-  
-      // Create a reference to the file you want to upload
-      const storageRef = ref(storage, `og-images/${Date.now()}.png`);
-  
-      // Upload the file
-      const uploadResult = await uploadBytes(storageRef, blob);
-      console.log('Uploaded file:', uploadResult);
-  
-      // Get the download URL
-      const url = await getDownloadURL(storageRef);
-      setFirebaseUrl(url);
-      console.log('Firebase Image URL:', url);
-    } catch (error) {
-      console.error('Error uploading image to Firebase:', error);
+    
+    const contentType = response.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+    
+    if (!contentType || !contentType.startsWith('image/')) {
+      throw new Error(`Invalid content type: ${contentType}`);
     }
-  };
+
+    const blob = await response.blob();
+    console.log('Blob size:', blob.size, 'bytes');
+
+    if (blob.size === 0) {
+      throw new Error('Fetched image is empty');
+    }
+
+    const storageRef = ref(storage, `og-images/${Date.now()}.png`);
+    const uploadResult = await uploadBytes(storageRef, blob);
+    console.log('Uploaded file:', uploadResult);
+
+    const url = await getDownloadURL(storageRef);
+    setFirebaseUrl(url);
+    console.log('Firebase Image URL:', url);
+  } catch (error) {
+    console.error('Error uploading image to Firebase:', error);
+    alert(`Error uploading image: ${error.message}`);
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">

@@ -131,19 +131,19 @@ const ImageMaker = () => {
         </form>
       </div>
       {ogImageUrl && (
-        <div className="w-full max-w-lg"> {/* Increased max width */}
-          <h2 className="text-2xl font-semibold mb-2 text-center">Generated OG Image:</h2>
+        <div className="w-full max-w-4xl"> {/* Increased max width */}
+          <h2 className="text-3xl font-semibold mb-2 text-center">Generated OG Image:</h2>
           <img src={`https://og-image-backend-f1ma.onrender.com${ogImageUrl}`} alt="OG" className="w-full rounded-md" />
           <button
             onClick={handleUploadToFirebase}
-            className="w-11/12 mx-auto text-center py-2 px-4 mt-4 bg-blue-600 hover:bg-blue-700 rounded-md transition duration-200 font-semibold text-white flex justify-center items-center" // Changed color to blue
+            className="w-2/3 mx-auto text-center py-2 px-4 mt-4 bg-blue-600 hover:bg-blue-700 rounded-md transition duration-200 font-semibold text-white flex justify-center items-center" // Changed color to blue
           >
             Generate Link
           </button>
         </div>
       )}
       {firebaseUrl && (
-        <div className="w-full max-w-lg mt-4 text-center"> {/* Increased max width */}
+        <div className="w-full max-w-2xl mt-4 text-center"> {/* Increased max width */}
           <h2 className="text-xl font-semibold mb-2">Firebase Image URL:</h2>
           <a href={firebaseUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400">
             {firebaseUrl}
